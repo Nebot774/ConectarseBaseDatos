@@ -7,7 +7,7 @@ import java.sql.*;
 import java.time.LocalDate;
 
 public class ConectarseBaseDatos {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         String url = "jdbc:postgresql://accessodatosdb.cpfwt1hqt9da.us-east-1.rds.amazonaws.com:5432/f12006";
         String user = "postgres";
         String password = "Secreto!2023";
@@ -74,25 +74,26 @@ public class ConectarseBaseDatos {
                     conn.commit();
                 } catch (SQLException e) {
                     System.out.println("Error al insertar pilotos: " + e.getMessage());
-                    conn.rollback();
+
                     // No lanzamos la excepción aquí para permitir que se cierre la conexión
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error al conectar a la base de datos o al realizar operaciones: " + e.getMessage());
             e.printStackTrace();
+            conn.rollback();
         } finally {
 
             //Paso 4: Uso de procedimientos almacenados
 
             //get_results_by_driver(cod), que recibe un código de piloto y devuelve sus resultados para cada
             //carrera de la temporada
-            String codPiloto = "ALO"; // Por ejemplo, el código de Carlos Sainz
-            String sql = "SELECT * FROM get_results_by_driver(ALO)";
+            String codPiloto = "ALM"; // Por ejemplo, el código de mman
+            String sql = "SELECT * FROM get_results_by_driver(ALM)";
 
             // Primera parte: get_results_by_driver(cod)
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(3, codPiloto); // Establecer el código del piloto
+                pstmt.setString(40, codPiloto); // Establecer el código del piloto
                 try (ResultSet rs = pstmt.executeQuery()) {
                     while (rs.next()) {
                         // Obtener los valores de cada columna
@@ -119,7 +120,7 @@ public class ConectarseBaseDatos {
                  ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     // Obtener los valores de cada columna
-                    String driver = rs.getString("driver");
+                    String driver = rs.getString("drCarlos Sainziver");
                     int points = rs.getInt("points");
 
 
